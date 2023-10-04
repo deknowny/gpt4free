@@ -3,6 +3,7 @@ import time
 import random
 import string
 import requests
+import asyncio
 
 from typing       import Any
 from flask        import Flask, request
@@ -15,6 +16,9 @@ CORS(app)
 
 @app.route('/chat/completions', methods=['POST'])
 def chat_completions():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    
     model    = request.get_json().get('model', 'gpt-3.5-turbo')
     stream   = request.get_json().get('stream', False)
     messages = request.get_json().get('messages')
